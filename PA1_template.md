@@ -1,25 +1,20 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 # extract the supplied file from compressed format into the current folder
 #unzip("activity.zip")
 
 # read the csv file from current directory
 fileName<- "activity.csv"
 activityData <- read.csv(fileName,header=TRUE,na.strings="NA")
-
-
 ```
 
 ## Mean total number of steps taken per day
-``` {r}
+
+```r
 # Compute and summarize by date the total number of steps
 stepCountPerDay<-aggregate(steps~date, data=activityData, sum)
 
@@ -48,17 +43,26 @@ plot(histgm, ylim=c(0,maxCount*1.10), labels=TRUE,main="Average steps per day",x
 
 # Draw a reference line to show the average number of steps per day     
 abline(v = averageStepsEachDay, col = "blue", lwd = 3)
-
 ```
-With an average count of steps daily being __`r sprintf("%s", averageStepsEachDay)`__, one can see that number of observations with step count higher than average is greater than those below average. This is a good sign! Interestingly the median value of total steps over all the days is __`r sprintf("%s", medianOfStepsEachDay)`__ is a very close to the average number of steps each day!
+
+![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+With an average count of steps daily being __10766__, one can see that number of observations with step count higher than average is greater than those below average. This is a good sign! Interestingly the median value of total steps over all the days is __10765__ is a very close to the average number of steps each day!
 
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 ######################
 
 # Load required libraries
 library(lubridate)
+```
+
+```
+## Warning: package 'lubridate' was built under R version 3.1.2
+```
+
+```r
 library(stringr)
 
 # read the csv file from current directory
@@ -99,7 +103,9 @@ timeIntervalForMaxSteps <- strftime(AvgStepsPerInterval[AvgStepsPerInterval$step
 abline(v = AvgStepsPerInterval[AvgStepsPerInterval$steps == max(AvgStepsPerInterval$steps),1], col = "blue", lwd = 1)
 ```
 
-The __`r timeIntervalForMaxSteps`__ interval shows as having the highest average number of steps, __`r maxAverageSteps`__ across all days
+![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+The __08:35:00 AM__ interval shows as having the highest average number of steps, __206__ across all days
 
 ## Imputing missing values
 
