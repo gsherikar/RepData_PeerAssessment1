@@ -103,6 +103,11 @@ timeIntervalForMaxSteps <- strftime(AvgStepsPerInterval[AvgStepsPerInterval$step
 abline(v = AvgStepsPerInterval[AvgStepsPerInterval$steps == max(AvgStepsPerInterval$steps),1], col = "blue", lwd = 1)
 ```
 
+```
+## Warning in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): NAs
+## introduced by coercion
+```
+
 ![](./PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 The __08:35:00 AM__ interval shows as having the highest average number of steps, __206__ across all days
@@ -241,7 +246,24 @@ abline(v = averageStepsEachDay, col = "blue", lwd = 3)
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
-With missing values imputed we see a slightly different picture. The average number of steps each day moved from __10766__ to __10821__ a net change of __55__, while the median value of total steps moved from __10765__ to __11015__ a net change of __250__
+With missing values imputed we see a slightly different picture. The average number of steps each day moved from __10766__ to __10821__ a net change of __55__, while the median value of total steps moved from __10765__ to __11015__ a net change of __250__!
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+```r
+#load required library
+library(lattice)
+
+completeData<-mutate(completeData,daytype=ifelse(weekday=="Saturday"|weekday=="Sunday","Weekend","Weekday"))
+attach(completeData)
+
+# Summarize by interval the average number of steps during that interval over all the days
+AvgStepsPerInterval<-aggregate(steps~daytype+interval, data=completeData, mean)
+
+xyplot(AvgStepsPerInterval$steps ~ AvgStepsPerInterval$interval | AvgStepsPerInterval$daytype, 
+       layout=c(1,2),type="l",xlab="Interval",ylab="Avergage Number of Steps")
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-6-1.png) 

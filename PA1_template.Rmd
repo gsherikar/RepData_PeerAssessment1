@@ -193,3 +193,18 @@ With missing values imputed we see a slightly different picture. The average num
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+#load required library
+library(lattice)
+
+completeData<-mutate(completeData,daytype=ifelse(weekday=="Saturday"|weekday=="Sunday","Weekend","Weekday"))
+attach(completeData)
+
+# Summarize by interval the average number of steps during that interval over all the days
+AvgStepsPerInterval<-aggregate(steps~daytype+interval, data=completeData, mean)
+
+xyplot(AvgStepsPerInterval$steps ~ AvgStepsPerInterval$interval | AvgStepsPerInterval$daytype, 
+       layout=c(1,2),type="l",xlab="Interval",ylab="Avergage Number of Steps")
+
+```
